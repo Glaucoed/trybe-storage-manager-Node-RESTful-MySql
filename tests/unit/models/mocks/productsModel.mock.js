@@ -6,8 +6,11 @@ const allProducts = [
 
 const product = { id: 1, name: 'Martelo de Thor' }
 
+const newProduct = { name: 'Teia do Homem Aranha' }
+
 
 module.exports = {
   allProducts,
   product,
+  newProduct,
 }
