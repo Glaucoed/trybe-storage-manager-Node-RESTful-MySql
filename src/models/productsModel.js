@@ -10,7 +10,7 @@ const getById = async (id) => {
   const [[data]] = await connection.execute(
     'SELECT * FROM StoreManager.products WHERE id = ?', [id],
   );
-  console.log(data);
+
   return data;
 };
 
