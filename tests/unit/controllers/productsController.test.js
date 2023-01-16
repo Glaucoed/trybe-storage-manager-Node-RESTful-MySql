@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const productsService = require('../../../src/services/productsService');
 const productsController = require('../../../src/controllers/productsController')
-const { allProducts } = require('./mocks/productsController.mock');
+const { allProducts, product } = require('./mocks/productsController.mock');
 
   describe('Listando todos os produtos da camada Controller', function () {
     it('Deve retornar o status 200 e a lista', async function () {
@@ -44,6 +44,25 @@ const { allProducts } = require('./mocks/productsController.mock');
 
       expect(res.status).to.have.been.calledWith(404); 
       expect(res.json).to.have.been.calledWith({ message: 'Product not found'});
+    });
+
+      it('retornar o produto encontrado', async function () {
+      // Arrange
+      const res = {};
+      const req = { params: { id: 1 },
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productsService, 'getById').resolves({type: null, data: product});
+
+      // Act
+      await productsController.getById(req, res);
+
+      // Assert
+
+      expect(res.status).to.have.been.calledWith(200); 
+      expect(res.json).to.have.been.calledWith(product);
     });
 
   afterEach(function () {
