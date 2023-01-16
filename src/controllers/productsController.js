@@ -18,9 +18,14 @@ const getById = async (req, res) => {
 
 const registerProduct = async (req, res) => {
   const { name: newProductName } = req.body;
-  const newProduct = await productsService.registerProduct(newProductName);
-  
-  return res.status(201).json(newProduct);
+
+  if (!newProductName) return res.status(400).json({ message: '"name" is required' });
+
+  const { type, message, data } = await productsService.registerProduct(newProductName);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(201).json(data);
 };
 
 module.exports = {
