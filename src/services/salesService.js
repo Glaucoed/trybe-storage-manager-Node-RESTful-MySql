@@ -1,6 +1,19 @@
 const salesModel = require('../models/salesModel');
 const productsModel = require('../models/productsModel');
 
+const getAll = async () => {
+  const data = await salesModel.getAll();
+  return data;
+};
+
+const getById = async (id) => {
+  const data = await salesModel.getById(id);
+
+  if (!data || data.length === 0) return { type: 'PRODUCT_NOT_FOUND', message: 'Sale not found' };
+
+  return { type: null, data };
+};
+
 const registerSale = async (listaProdutos) => {
   const allProductsId = await productsModel.getAll();
   const lastIdProduct = allProductsId.at(-1).id;
@@ -28,4 +41,6 @@ const registerSale = async (listaProdutos) => {
 
 module.exports = {
   registerSale,
+  getAll,
+  getById,
 };
