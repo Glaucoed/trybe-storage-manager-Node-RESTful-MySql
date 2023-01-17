@@ -23,8 +23,7 @@ describe('Testando a rota products da camada Model', function () {
     sinon.stub(connection, 'execute').resolves([[product]]);
     // Act
     const data = await productsModel.getById(1);
-    // console.log(data)
-    // console.log(product)
+
     // Assert
     expect(data).to.be.deep.equal(product)
   })
