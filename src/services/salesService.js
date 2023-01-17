@@ -16,12 +16,13 @@ const registerSale = async (listaProdutos) => {
   } 
   
   const idSale = await salesModel.newIdSale();
+  
   const promises = listaProdutos.map(async ({ productId, quantity }) => {
       salesModel.saleProducts(idSale, productId, quantity);
   });
   
   await Promise.all(promises);
-
+  
   return { data: { id: idSale, itemsSold: listaProdutos } };
 };
 
