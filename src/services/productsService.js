@@ -24,8 +24,23 @@ const registerProduct = async (newProductName) => {
   return { type: null, data: newProduct };
 };
 
+const updateProduct = async (id, name) => {
+  const allProductsId = await productsModel.getAll();
+  const lastIdProduct = allProductsId.at(-1).id;
+
+  if (id > lastIdProduct) return { type: 'ID_SALE_NOT_FOUND', message: 'Product not found' }; 
+
+  const error = schema.validateName(name);
+  if (error.type) return error;
+
+  const data = await productsModel.updateProduct(id, name);
+
+  return { type: null, data };
+};
+
 module.exports = {
   getAll,
   getById,
   registerProduct,
+  updateProduct,
 };
