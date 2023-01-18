@@ -1,3 +1,4 @@
+const { number } = require('joi');
 const productsModel = require('../models/productsModel');
 const schema = require('./validations/validateInputProducts');
 
@@ -38,9 +39,28 @@ const updateProduct = async (id, name) => {
   return { type: null, data };
 };
 
+const removeProduct = async (id) => {
+  const allProductsId = await productsModel.getAll();
+  const idProductRemove = await productsModel.getById(id);
+
+  const lastIdProducts = allProductsId.at(-1).id;
+  const verifyAvailableId = id > lastIdProducts;
+
+  const verifyIdRemove = idProductRemove === undefined;
+
+  const { type, message } = await productsModel.removeProduct(id);
+  
+  if (type || verifyAvailableId || verifyIdRemove) {
+    return { type: 'ID_SALE_NOT_FOUND', message: 'Product not found' };
+  } 
+  return { type, message };
+};
+
 module.exports = {
   getAll,
   getById,
   registerProduct,
   updateProduct,
+  removeProduct,
+  
 };
