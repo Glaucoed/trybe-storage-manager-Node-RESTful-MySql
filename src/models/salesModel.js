@@ -52,6 +52,7 @@ const registerSale = async (idSale, productId, quantity) => {
 
 const removeSale = async (id) => {
   await connection.execute('DELETE FROM StoreManager.sales WHERE id = ?', [id]);
+  
   return { type: null };
 };
 
