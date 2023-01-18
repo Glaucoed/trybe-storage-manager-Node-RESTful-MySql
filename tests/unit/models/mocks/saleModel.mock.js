@@ -9,6 +9,8 @@ const resultQuery = {
   warningStatus: 0
 }
 
+const idAvailable = { id: 2, date: "2023-01-18T18:50:19.000Z" }
+
 const allSales = [
   {
     "saleId": 1,
@@ -43,7 +45,11 @@ const allSalesGetById = [
   }
 ];
 
+const removeSucess = { type: null }
+
 module.exports = {
+  removeSucess,
+  idAvailable,
   numberOne,
   resultQuery,
   allSales,

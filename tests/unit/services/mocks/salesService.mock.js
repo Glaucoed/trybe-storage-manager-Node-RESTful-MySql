@@ -7,6 +7,8 @@ const param1 = 3;
 const param2 = 1;
 const param3 = 1
 
+const removeSale = { type: null }
+
 const newProductSale = {
 	id: 3,
 	itemsSold: [
@@ -54,6 +56,27 @@ const arrayMockInvalidZero = [
 	}
 ]
 
+const allSalesId = [
+  {
+    "id": 1,
+    "date": "2023-01-17T23:38:41.000Z",
+    "productId": 1,
+    "quantity": 5
+  },
+  {
+    "id": 1,
+    "date": "2023-01-17T23:38:41.000Z",
+    "productId": 2,
+    "quantity": 10
+  },
+  {
+    "id": 2,
+    "date": "2023-01-17T23:38:41.000Z",
+    "productId": 3,
+    "quantity": 15
+  }
+];
+
 const allSales = [
   {
     "saleId": 1,
@@ -89,6 +112,8 @@ const allSalesGetById = [
 ];
 
 module.exports = {
+  allSalesId,
+  removeSale,
   allSalesGetById,
   allSales,
   arrayMockInvalidZero,

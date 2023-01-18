@@ -5,7 +5,7 @@ const salesService = require('../../../src/services/salesService');
 const productsModel = require('../../../src/models/productsModel');
 const salesModel = require('../../../src/models/salesModel');
 
-const { allProducts, newProductSale, arrayMock, arrayMockInvalid, arrayMockInvalidZero, allSales, allSalesGetById } = require('./mocks/salesService.mock');
+const { allSalesId, removeSale, allProducts, newProductSale, arrayMock, arrayMockInvalid, arrayMockInvalidZero, allSales, allSalesGetById } = require('./mocks/salesService.mock');
 
 
 describe('Testando o sale da camada service', function () {
@@ -58,7 +58,7 @@ describe('Testando o sale da camada service', function () {
     
   })
 
-    it('listando uma unica venda com o id inexistente ', async function () {
+  it('listando uma unica venda com o id inexistente ', async function () {
     sinon.stub(salesModel, 'getById').resolves(undefined);
 
       const data = await salesService.getById(9999);
@@ -66,6 +66,27 @@ describe('Testando o sale da camada service', function () {
     expect(data.type).to.be.equal('SALE_NOT_FOUND')
     expect(data.message).to.be.equal('Sale not found')   
     
+  })
+
+  it('Validando se é possível remover uma venda pelo id valido', async function () {
+    sinon.stub(salesModel, 'getAll').resolves(allSalesId);
+    sinon.stub(salesModel, 'queryIdAvailable').resolves(1);
+    sinon.stub(salesModel, 'removeSale').resolves(removeSale)
+
+    const { type } = await salesService.removeSale(1);
+    
+    expect(type).to.be.deep.equal(removeSale.type);
+  })
+
+    it('Validando se é possível remover uma venda pelo id valido invalido', async function () {
+    sinon.stub(salesModel, 'getAll').resolves(allSalesId);
+    sinon.stub(salesModel, 'queryIdAvailable').resolves(1);
+    sinon.stub(salesModel, 'removeSale').resolves(removeSale)
+
+    const { type, message } = await salesService.removeSale(999);
+    
+    expect(type).to.equal('ID_SALE_NOT_FOUND');
+    expect(message).to.deep.equal('Sale not found') 
   })
 
   afterEach(function () {

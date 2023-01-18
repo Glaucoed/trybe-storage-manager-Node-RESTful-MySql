@@ -10,6 +10,7 @@ const productsController = require('../../../src/controllers/productsController'
 const { allProducts, product, productBody, newProduct, mockErrorNotFoundId, } = require('./mocks/productsController.mock');
 
 describe('Listando todos os produtos da camada Controller', function () {
+  
   it('Listando todos os produtos e o status 200', async function () {
     const res = {};
     const req = {};
@@ -104,7 +105,7 @@ describe('Listando todos os produtos da camada Controller', function () {
     expect(res.json).to.have.been.calledWith(product)
   });
 
-    it('Realizando o update de um produto pelo id inexistente e retornando o status 404', async function () {
+  it('Realizando o update de um produto pelo id inexistente e retornando o status 404', async function () {
     const res = {};
     const req = { params: { id: 999}, body: { name: 'Martelo de Thor'}};
       

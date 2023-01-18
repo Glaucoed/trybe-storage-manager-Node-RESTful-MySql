@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const connection = require('../../../src/models/db/connection');
 const salesModel = require('../../../src/models/salesModel');
-const { numberOne, resultQuery, allSales, allSalesGetById } = require('./mocks/saleModel.mock');
+const { removeSucess, idAvailable, numberOne, resultQuery, allSales, allSalesGetById } = require('./mocks/saleModel.mock');
 
 
 describe('Testando a rota sale da camada Model', async function () {
@@ -32,12 +32,29 @@ describe('Testando a rota sale da camada Model', async function () {
     expect(data).to.be.deep.equal(allSales)
   })
 
-    it('Validado que  será possível listar todas as vendas de com um id especifico', async function () {
+  it('Validado que  será possível listar todas as vendas de com um id especifico', async function () {
     sinon.stub(connection, 'execute').resolves([allSalesGetById]);
 
       const data = await salesModel.getById(numberOne);
 
     expect(data).to.be.deep.equal(allSalesGetById)
+  })
+  
+  it('Validado que  será possível listar uma venda', async function () {
+    sinon.stub(connection, 'execute').resolves([[idAvailable]]);
+
+    const data = await salesModel.queryIdAvailable(numberOne);
+
+    expect(data).to.be.deep.equal(idAvailable)
+
+  })
+
+  it('Validando se é possível remover uma sale pelo id', async function () {
+    sinon.stub(connection, 'execute').resolves(removeSucess)
+
+    const data = await salesModel.removeSale(1);
+
+    expect(data).to.be.deep.equal(removeSucess)
   })
 
   afterEach(function () {
