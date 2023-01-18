@@ -7,11 +7,11 @@ chai.use(sinonChai);
 
 const salesService = require('../../../src/services/salesService');
 const salesController = require('../../../src/controllers/salesController')
-const { productSalesBody, newProductSale, messageError, productSalesBodyInvalid } = require('./mocks/salesController.mock');
+const { allSales, allSalesGetById ,productSalesBody, newProductSale, messageError, productSalesBodyInvalid } = require('./mocks/salesController.mock');
 
 describe('Testando o sales da camada Controller', function () {
  
-  it('Cadastrando um novo produto com sucesso', async function () {
+  it('Cadastrando uma nova venda com sucesso', async function () {
     const res = {};
     const req = {
       body: productSalesBody
@@ -28,7 +28,7 @@ describe('Testando o sales da camada Controller', function () {
     expect(res.json).to.have.been.calledWith(newProductSale);
   })
 
-  it('Cadastrando um novo produto com sucesso', async function () {
+  it('Cadastrando uma nova venda sem sucesso', async function () {
     const res = {};
     const req = {
       body: productSalesBodyInvalid
@@ -45,6 +45,52 @@ describe('Testando o sales da camada Controller', function () {
     expect(res.json).to.have.been.calledWith(messageError);
   })
 
+  it('Listando todos as vendas e o status 200', async function () {
+    const res = {};
+    const req = {};
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'getAll').resolves(allSales);
+
+    await salesController.getAll(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(allSales)
+  })
+
+  it('retornar o sale com o id encontrado', async function () {
+    const res = {};
+    const req = { params: { id: 1 },
+      };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'getById').resolves({type: null, data: allSalesGetById});
+
+      
+    await salesController.getById(req, res);
+
+    expect(res.status).to.have.been.calledWith(200); 
+    expect(res.json).to.have.been.calledWith(allSalesGetById);
+  });
+
+  it('Ao passar um id que não existe no banco deve retornar um erro', async function () {
+    
+    const res = {};
+    const req = { params: { id: 9999 },
+    };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, 'getById').resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' })
+
+    await salesController.getById(req, res);
+
+    expect(res.status).to.have.been.calledWith(404); 
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found'});
+  });
   afterEach(function () {
     sinon.restore();
   });

@@ -9,7 +9,7 @@ const getAll = async () => {
 const getById = async (id) => {
   const data = await salesModel.getById(id);
 
-  if (!data || data.length === 0) return { type: 'PRODUCT_NOT_FOUND', message: 'Sale not found' };
+  if (!data || data.length === 0) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
 
   return { type: null, data };
 };
@@ -31,7 +31,7 @@ const registerSale = async (listaProdutos) => {
   const idSale = await salesModel.newIdSale();
   
   const promises = listaProdutos.map(async ({ productId, quantity }) => {
-      salesModel.saleProducts(idSale, productId, quantity);
+      salesModel.registerSale(idSale, productId, quantity);
   });
   
   await Promise.all(promises);
