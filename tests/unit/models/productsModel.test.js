@@ -3,28 +3,26 @@ const sinon = require('sinon');
 
 const connection = require('../../../src/models/db/connection');
 const productsModel = require('../../../src/models/productsModel');
-const { allProducts, product, newProduct } = require('./mocks/productsModel.mock');
+const { allProducts, product, newProduct, removeSucess } = require('./mocks/productsModel.mock');
 
 const FOUR = 4;
 
 describe('Testando a rota products da camada Model', function () {
   it('Listando todos os produtos', async function () {
-    // Arrange
     sinon.stub(connection, 'execute').resolves([allProducts])
-    // Act
+    
     const data = await productsModel.getAll();
-    // Assert
+    
     expect(data).to.be.deep.equal(allProducts)
   })
 
 
   it('Listando um produto pelo id', async function () {
-    // Arrange
+    
     sinon.stub(connection, 'execute').resolves([[product]]);
-    // Act
+    
     const data = await productsModel.getById(1);
 
-    // Assert
     expect(data).to.be.deep.equal(product)
   })
 
@@ -35,6 +33,27 @@ describe('Testando a rota products da camada Model', function () {
 
     expect(idNewProduct).to.equal(FOUR);
   })
+
+  it('Validando o update do nome de um produto', async function () {
+    sinon.stub(connection, 'execute').resolves(product);
+
+    const data = await productsModel.updateProduct(1, 'Martelo de Thor');
+    
+    expect(data).to.be.deep.equal(product);
+  })
+  
+  it('Validando o se é possivel remover um produto pelo id', async function () {
+    sinon.stub(connection, 'execute').resolves(removeSucess)
+
+    const data = await productsModel.removeProduct(1);
+
+    expect(data).to.be.deep.equal(removeSucess)
+  })
+
+  // it('', async function () {
+    
+  // })
+
 
   afterEach(function () {
     sinon.restore();
