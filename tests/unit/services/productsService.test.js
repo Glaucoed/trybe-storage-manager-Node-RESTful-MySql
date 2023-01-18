@@ -93,7 +93,7 @@ describe('Testando o products da camada service', function () {
 
     const { type, message } = await productsService.removeProduct(999);
 
-    expect(type).to.equal('ID_SALE_NOT_FOUND');
+    expect(type).to.equal('PRODUCT_NOT_FOUND');
     expect(message).to.deep.equal('Product not found') 
   })
 
