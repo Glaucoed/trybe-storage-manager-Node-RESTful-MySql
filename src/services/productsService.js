@@ -1,4 +1,3 @@
-const { number } = require('joi');
 const productsModel = require('../models/productsModel');
 const schema = require('./validations/validateInputProducts');
 
@@ -49,7 +48,7 @@ const removeProduct = async (id) => {
   const verifyIdRemove = idProductRemove === undefined;
 
   const { type, message } = await productsModel.removeProduct(id);
-  
+
   if (type || verifyAvailableId || verifyIdRemove) {
     return { type: 'ID_SALE_NOT_FOUND', message: 'Product not found' };
   } 
