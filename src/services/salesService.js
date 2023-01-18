@@ -39,8 +39,27 @@ const registerSale = async (listaProdutos) => {
   return { data: { id: idSale, itemsSold: listaProdutos } };
 };
 
+const removeSale = async (id) => {
+  const allSalesId = await salesModel.getAll();
+  const lastIdSales = allSalesId.at(-1).id;
+  const verifyAvailableId = id > lastIdSales;
+
+  const verifyContainsIdDatabase = await salesModel.queryIdAvailable(id);
+
+  const verifyIdRemove = verifyContainsIdDatabase === undefined;
+
+  const { type, message } = await salesModel.removeSale(id);
+  
+  if (type || verifyAvailableId || verifyIdRemove) {
+    return { type: 'ID_SALE_NOT_FOUND', message: 'Sale not found' };
+  }
+
+  return { type, message };
+};
+
 module.exports = {
   registerSale,
   getAll,
   getById,
+  removeSale,
 };

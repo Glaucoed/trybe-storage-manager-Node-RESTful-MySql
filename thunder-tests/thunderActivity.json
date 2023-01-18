@@ -140,5 +140,24 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "73de0063-846d-430d-b9ce-6209acd6e2f0",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/sales/1",
+    "url": "http://localhost:3000/sales/1",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-01-16T16:43:49.906Z",
+    "modified": "2023-01-18T18:47:53.472Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n  {\n    \"productId\": 1,\n    \"quantity\": 10\n  },\n  {\n    \"productId\": 2,\n    \"quantity\": 5\n  }\n]",
+      "form": []
+    },
+    "tests": []
   }
 ]

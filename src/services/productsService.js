@@ -50,7 +50,7 @@ const removeProduct = async (id) => {
   const { type, message } = await productsModel.removeProduct(id);
 
   if (type || verifyAvailableId || verifyIdRemove) {
-    return { type: 'ID_SALE_NOT_FOUND', message: 'Product not found' };
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
   } 
   return { type, message };
 };

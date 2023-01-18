@@ -15,6 +15,13 @@ sp.product_id, sp.product_id`;
   return data;
 };
 
+const queryIdAvailable = async (id) => {
+    const [[data]] = await connection.execute(
+    'SELECT * FROM StoreManager.sales WHERE id = ?;', [id],
+  );
+  return data;
+};
+
 const getById = async (id) => {
   const query = `SELECT sa.date, sp.product_id AS productId, sp.quantity
 FROM 
@@ -43,9 +50,16 @@ const registerSale = async (idSale, productId, quantity) => {
   return result;
 };
 
+const removeSale = async (id) => {
+  await connection.execute('DELETE FROM StoreManager.sales WHERE id = ?', [id]);
+  return { type: null };
+};
+
 module.exports = {
   newIdSale,
   registerSale,
   getAll,
   getById,
+  removeSale,
+  queryIdAvailable,
 };
