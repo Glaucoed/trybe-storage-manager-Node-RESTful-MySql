@@ -16,8 +16,7 @@ describe('Testando a rota products da camada Model', function () {
     expect(data).to.be.deep.equal(allProducts)
   })
 
-
-  it('Listando um produto pelo id', async function () {
+  it('Listando um unico produto com o id', async function () {
     
     sinon.stub(connection, 'execute').resolves([[product]]);
     
@@ -26,7 +25,7 @@ describe('Testando a rota products da camada Model', function () {
     expect(data).to.be.deep.equal(product)
   })
 
-  it('Cadastrando um produto', async function () {
+  it('Cadastrando um novo produto', async function () {
     sinon.stub(connection, 'execute').resolves([{ insertId: FOUR }]);
 
     const idNewProduct = await productsModel.registerProduct(newProduct)
@@ -34,7 +33,7 @@ describe('Testando a rota products da camada Model', function () {
     expect(idNewProduct).to.equal(FOUR);
   })
 
-  it('Validando o update do nome de um produto', async function () {
+  it('Validando se é possível realizar o update de um produto pelo id', async function () {
     sinon.stub(connection, 'execute').resolves(product);
 
     const data = await productsModel.updateProduct(1, 'Martelo de Thor');
@@ -42,18 +41,13 @@ describe('Testando a rota products da camada Model', function () {
     expect(data).to.be.deep.equal(product);
   })
   
-  it('Validando o se é possivel remover um produto pelo id', async function () {
+  it('Validando se é possível remover um produto pelo id', async function () {
     sinon.stub(connection, 'execute').resolves(removeSucess)
 
     const data = await productsModel.removeProduct(1);
 
     expect(data).to.be.deep.equal(removeSucess)
   })
-
-  // it('', async function () {
-    
-  // })
-
 
   afterEach(function () {
     sinon.restore();

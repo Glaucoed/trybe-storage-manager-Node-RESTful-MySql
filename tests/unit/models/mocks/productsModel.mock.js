@@ -8,7 +8,7 @@ const product = { id: 1, name: 'Martelo de Thor' }
 
 const newProduct = { name: 'Teia do Homem Aranha' }
 
-const removeSucess = { type: null}
+const removeSucess = { type: null }
 
 module.exports = {
   allProducts,
