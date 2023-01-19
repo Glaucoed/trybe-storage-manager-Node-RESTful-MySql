@@ -57,7 +57,30 @@ const removeSale = async (id) => {
   return { type, message };
 };
 
+const updateSale = async (arrayBody, id) => {
+  const verifyQuantity = arrayBody.some((item) => item.quantity <= 0);
+  if (verifyQuantity) {
+    return { type: 'UNPROCESSABLE_ENTITY', message: '"quantity" must be greater than or equal to 1',
+    }; 
+  } 
+  const verifyIdContains = await salesModel.getById(id);
+  if (verifyIdContains.length === 0) {
+    return { type: 'SALE_NOT_FOUND', message: 'Sale not found' }; 
+  }
+  const containsProduct = await Promise.all(arrayBody
+    .map(({ productId }) => productsModel.getById(productId)));
+  
+  const verifyProducts = containsProduct.some((products) => products === undefined);
+    if (verifyProducts) return { type: 'SALE_NOT_FOUND', message: 'Product not found' };
+  
+  const newData = await Promise.all(arrayBody
+    .map(async ({ quantity, productId }) => salesModel.updateSale(quantity, id, productId)));
+
+  return { data: { saleId: +id, itemsUpdated: newData } };
+};
+
 module.exports = {
+  updateSale,
   registerSale,
   getAll,
   getById,
