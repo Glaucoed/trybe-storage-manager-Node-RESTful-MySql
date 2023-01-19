@@ -56,7 +56,7 @@ StoreManager.sales_products
 SET
 quantity = ?
 WHERE sale_id = ? AND product_id = ?`, [quantity, id, productId]);
-  return { productId, quantity };
+return { productId, quantity };
 };
 
 const removeSale = async (id) => {

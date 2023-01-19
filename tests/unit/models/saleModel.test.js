@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const connection = require('../../../src/models/db/connection');
 const salesModel = require('../../../src/models/salesModel');
-const { removeSucess, idAvailable, numberOne, resultQuery, allSales, allSalesGetById } = require('./mocks/saleModel.mock');
+const { saleUpdateSucess, removeSucess, idAvailable, numberOne, resultQuery, allSales, allSalesGetById } = require('./mocks/saleModel.mock');
 
 
 describe('Testando a rota sale da camada Model', async function () {
@@ -57,6 +57,14 @@ describe('Testando a rota sale da camada Model', async function () {
     expect(data).to.be.deep.equal(removeSucess)
   })
 
+    it('Validando se é possível realizar o update de uma venda pelo id', async function () {
+    sinon.stub(connection, 'execute').resolves(saleUpdateSucess);
+
+    const data = await salesModel.updateSale(numberOne, numberOne, numberOne);
+    
+    expect(data).to.be.deep.equal(saleUpdateSucess);
+  })
+  
   afterEach(function () {
     sinon.restore();
   });
