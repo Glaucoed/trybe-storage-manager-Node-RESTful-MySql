@@ -25,6 +25,8 @@ const messageError = { message: 'Product not found' }
 
 const newProductSale = { id: 3, itemsSold: productSalesBody };
 
+const mockErrorSaleNotFound = { type: 'ID_SALE_NOT_FOUND', message: 'Product not found' }
+
 const mockErrorNotFoundId = { "type": 'ID_SALE_NOT_FOUND', "message": 'Product not found' }
 
 
@@ -63,6 +65,7 @@ const allSalesGetById = [
 ];
 
 module.exports = {
+  mockErrorSaleNotFound,
   mockErrorNotFoundId,
   allSales,
   allSalesGetById,

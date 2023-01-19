@@ -5,7 +5,7 @@ const salesService = require('../../../src/services/salesService');
 const productsModel = require('../../../src/models/productsModel');
 const salesModel = require('../../../src/models/salesModel');
 
-const { allSalesId, removeSale, allProducts, newProductSale, arrayMock, arrayMockInvalid, arrayMockInvalidZero, allSales, allSalesGetById } = require('./mocks/salesService.mock');
+const { arrayMockInvalidProduct, updateObj, updateSale, allSalesId, removeSale, allProducts, newProductSale, arrayMock, arrayMockInvalid, arrayMockInvalidZero, allSales, allSalesGetById, param1 } = require('./mocks/salesService.mock');
 
 
 describe('Testando o sale da camada service', function () {
@@ -87,6 +87,46 @@ describe('Testando o sale da camada service', function () {
     
     expect(type).to.equal('ID_SALE_NOT_FOUND');
     expect(message).to.deep.equal('Sale not found') 
+    })
+  
+  it('Validando se é possível realizar o update de uma venda', async function () {
+    sinon.stub(salesModel, 'getById').resolves(param1)
+    sinon.stub(salesModel, 'updateSale').resolves(updateObj)
+    sinon.stub(productsModel, 'getById').resolves(1)
+
+    const { data } = await salesService.updateSale(arrayMock, param1)
+
+    expect(data).to.be.deep.equal(updateSale)
+  })
+
+  it('Validando se é possível realizar o update de uma venda com a quantidade invalida', async function () {
+    sinon.stub(salesModel, 'getById').resolves(param1)
+    sinon.stub(salesModel, 'updateSale').resolves(updateObj)
+    sinon.stub(productsModel, 'getById').resolves(1)
+
+      const {type, message} = await salesService.updateSale(arrayMockInvalidZero, param1)
+
+      expect(type).to.be.equal('UNPROCESSABLE_ENTITY')
+      expect(message).to.be.equal('"quantity" must be greater than or equal to 1')
+  })
+  
+  it('Validando se é possível realizar o update de uma venda com a quantidade invalida', async function () {
+    sinon.stub(salesModel, 'getById').resolves(param1)
+    sinon.stub(salesModel, 'updateSale').resolves(updateObj)
+    sinon.stub(productsModel, 'getById').resolves(undefined)
+
+    const {type, message} = await salesService.updateSale(arrayMockInvalidProduct, param1)
+
+    expect(type).to.be.equal('SALE_NOT_FOUND')
+    expect(message).to.be.equal('Product not found')
+  })
+
+
+  it('Validando o update de uma venda com o os dados invalidos', async function () {
+    
+    const result = await salesService.updateSale([], 0)
+
+    expect(result.type).to.equal('SALE_NOT_FOUND');
   })
 
   afterEach(function () {

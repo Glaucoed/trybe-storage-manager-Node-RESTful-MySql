@@ -25,6 +25,19 @@ describe('Listando todos os produtos da camada Controller', function () {
     expect(res.json).to.have.been.calledWith(allProducts)
   });
 
+  it('Listando um ou mais produtos com query e o status 200', async function () {
+    const res = {};
+      const req = { query: { q: "a" } };
+      
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productsService, 'getAll').resolves(allProducts);
+
+    await productsController.searchProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+  });
+
   it('Listando um unico produto com o id e o status 200', async function () {
     const res = {};
     const req = { params: { id: 1 },
@@ -93,7 +106,7 @@ describe('Listando todos os produtos da camada Controller', function () {
 
   it('Realizando o update de um produto pelo id e retornando o status 200', async function () {
     const res = {};
-    const req = { params: { id: 1}, body: { name: 'Martelo de Thor'}};
+    const req = { params: { id: 1 }, body: { name: 'Martelo de Thor'}};
       
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns();
@@ -144,9 +157,9 @@ describe('Listando todos os produtos da camada Controller', function () {
     await productsController.removeProduct(req, res);
     
     expect(res.status).to.have.been.calledWith(404);
-    
 
   });
+  
 
   afterEach(function () {
     sinon.restore();

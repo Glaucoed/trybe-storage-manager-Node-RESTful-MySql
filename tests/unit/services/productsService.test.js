@@ -17,6 +17,15 @@ describe('Testando o products da camada service', function () {
     expect(data).to.be.equal(allProducts);
   });
 
+    it('Listando um ou mais produtos utilizando query', async function () {
+    sinon.stub(productsModel, 'getAll').resolves(allProducts)
+    
+
+    const data = await productsService.searchProduct('');
+
+    expect(data).to.be.deep.equal(allProducts);
+  });
+
   it('Listando um unico produto com o id', async function () {
     sinon.stub(productsModel, 'getById').resolves(product)
 

@@ -9,6 +9,24 @@ const param3 = 1
 
 const removeSale = { type: null }
 
+const updateObj = 	{
+			productId: 1,
+			quantity: 1
+		}
+const updateSale = {
+	saleId: 3,
+	itemsUpdated: [
+		{
+			productId: 1,
+			quantity: 1
+		},
+		{
+			productId: 1,
+			quantity: 1
+		}
+	]
+}
+
 const newProductSale = {
 	id: 3,
 	itemsSold: [
@@ -53,6 +71,17 @@ const arrayMockInvalidZero = [
 	{
 		productId: 1,
 		quantity: 0,
+	}
+]
+
+const arrayMockInvalidProduct = [
+	{
+		productId: 999999999,
+		quantity: 20,
+	},
+  {
+    productId: 99999999999,
+		quantity: 20,
 	}
 ]
 
@@ -112,6 +141,9 @@ const allSalesGetById = [
 ];
 
 module.exports = {
+  arrayMockInvalidProduct,
+  updateObj,
+  updateSale,
   allSalesId,
   removeSale,
   allSalesGetById,

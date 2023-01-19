@@ -15,11 +15,13 @@ const getById = async (id) => {
 };
 
 const registerSale = async (listaProdutos) => {
-  const allProductsId = await productsModel.getAll();
-  const lastIdProduct = allProductsId.at(-1).id;
-  
-  const verificaProductId = listaProdutos.every((item) => item.productId <= lastIdProduct);
-  if (!verificaProductId) return { type: 'ID_SALE_NOT_FOUND', message: 'Product not found' }; 
+  // const allProductsId = await productsModel.getAll();
+  // const lastIdProduct = allProductsId.at(-1).id;
+
+  const id = listaProdutos.map(async ({ productId }) => productsModel.getById(productId));
+  const arrayPromises = await Promise.all(id);
+  const verify = arrayPromises.some((elemento) => !elemento);
+  if (verify) return { type: 'ID_SALE_NOT_FOUND', message: 'Product not found' }; 
   
   const verifyQuantity = listaProdutos.every((item) => item.quantity <= 0);
   if (verifyQuantity) {
@@ -75,7 +77,6 @@ const updateSale = async (arrayBody, id) => {
   
   const newData = await Promise.all(arrayBody
     .map(async ({ quantity, productId }) => salesModel.updateSale(quantity, id, productId)));
-
   return { data: { saleId: +id, itemsUpdated: newData } };
 };
 

@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const salesService = require('../../../src/services/salesService');
 const salesController = require('../../../src/controllers/salesController')
-const { mockErrorNotFoundId, allSales, allSalesGetById ,productSalesBody, newProductSale, messageError, productSalesBodyInvalid } = require('./mocks/salesController.mock');
+const {mockErrorSaleNotFound, mockErrorNotFoundId, allSales, allSalesGetById ,productSalesBody, newProductSale, messageError, productSalesBodyInvalid } = require('./mocks/salesController.mock');
 
 describe('Testando o sales da camada Controller', function () {
  
@@ -120,6 +120,33 @@ describe('Testando o sales da camada Controller', function () {
     expect(res.status).to.have.been.calledWith(404);
     
 
+  });
+
+  it('Realizando o update de uma venda pelo id e retornando o status 200', async function () {
+    const res = {};
+    const req = { params: { id: 1 }, body: productSalesBody};
+      
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'updateSale').resolves({ data: { saleId: 1, itemsUpdated: productSalesBody } });
+
+    await salesController.updateSale(req, res);
+    
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith({ saleId: 1, itemsUpdated: productSalesBody })
+  });
+
+    it('Realizando o update de uma venda pelo id inexistente e retornando o status 200', async function () {
+    const res = {};
+    const req = { params: { id: 999 }, body: productSalesBody};
+      
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'updateSale').resolves(mockErrorSaleNotFound);
+
+    await salesController.updateSale(req, res);
+    
+    expect(res.status).to.have.been.calledWith(404);
   });
 
   afterEach(function () {
