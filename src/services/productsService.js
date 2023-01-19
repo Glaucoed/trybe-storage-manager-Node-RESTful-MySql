@@ -55,7 +55,15 @@ const removeProduct = async (id) => {
   return { type, message };
 };
 
+const searchProduct = async (search) => {
+  const allProducts = await productsModel.getAll();
+  const filteredProducts = allProducts
+  .filter(({ name }) => name.toLowerCase().includes(search.toLowerCase()));
+  return filteredProducts;
+};
+
 module.exports = {
+  searchProduct,
   getAll,
   getById,
   registerProduct,
